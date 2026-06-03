@@ -173,6 +173,16 @@
             #binding-cells = <0>;
             bindings = <&macro_tap &to SYS>, <&macro_tap &kp F19>;
         };
+
+        m_mo_fn_from_nav: m_mo_fn_from_nav {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings =
+                <&macro_press &mo FN_ITEM>,
+                <&macro_tap &kp F17>,
+                <&macro_release &mo FN_ITEM>,
+                <&macro_tap &kp F16>;
+        };
     };
 
     behaviors {
@@ -269,7 +279,7 @@
             display-name = "Navi";
             bindings = <
 &kp ESC    &m_undo   &m_cut    &m_copy   &m_paste  &m_save                       &m_redo       &kp HOME      &kp PG_UP     &kp PG_DN     &kp END       &kp DEL
-&kp TAB    &none     &none     &mo FN_ITEM &m_to_sys  &m_to_game                      &kp LC(LEFT)  &kp LEFT      &kp DOWN      &kp UP        &kp RIGHT     &kp LC(RIGHT)
+&kp TAB    &none     &none     &m_mo_fn_from_nav &m_to_sys  &m_to_game                      &kp LC(LEFT)  &kp LEFT      &kp DOWN      &kp UP        &kp RIGHT     &kp LC(RIGHT)
 &kp LCTRL  &none     &none     &none     &none     &kp BSPC   &none  &none       &kp BSPC      &kp LS(LEFT)  &kp LS(DOWN)  &kp LS(UP)    &kp LS(RIGHT) &kp RET
 &kp LCTRL  &kp LGUI  &kp LALT  &m_to_base  &kp TAB   &kp SPACE                     &kp BSPC      &kp RET       &m_to_base      &m_find       &kp F3        &kp LS(F3)
             >;
