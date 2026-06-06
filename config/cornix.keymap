@@ -304,7 +304,7 @@
             display-name = "FnItem";
             bindings = <
 &kp ESC    &kp N1  &kp N2  &kp N3  &kp N4  &kp N5                         &none    &none    &none    &kp F7   &kp F8    &kp F9
-&LCTRL      &kp K   &kp L   &kp M   &kp H   &kp N6                         &none    &none    &none    &kp F4   &kp F5    &kp F6
+&KP LCTRL      &kp K   &kp L   &kp M   &kp H   &kp N6                         &none    &none    &none    &kp F4   &kp F5    &kp F6
 &kp LSHFT  &kp Z   &kp X   &kp C   &kp V   &kp B      &kp C_MUTE  &none        &none    &none    &none    &kp F1   &kp F2    &kp F3
 &kp LCTRL  &kp LGUI &LALT  &trans  &kp TAB &kp SPACE                      &kp BSPC &kp RET   &trans   &kp F10  &kp F11   &kp F12
             >;
