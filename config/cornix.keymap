@@ -314,10 +314,10 @@
         system_layer {
             display-name = "System";
             bindings = <
-&none        &bt BT_SEL 0  &bt BT_SEL 1  &bt BT_SEL 2  &out OUT_USB  &bt BT_CLR                     &none  &none  &none       &none  &none       &none
-&none        &none         &none         &none         &kp C_SLEEP   &kp F20                        &none  &none  &none       &none  &none       &none
-&none        &none         &none         &none         &none         &none   &kp C_MUTE  &mkp MCLK  &none  &none  &none       &none  &none       &none
-&bootloader  &sys_reset    &none         &m_to_base    &none         &none                          &none  &none  &m_to_base  &none  &sys_reset  &bootloader
+&none        &bt BT_SEL 0  &bt BT_SEL 1  &bt BT_SEL 2  &out OUT_USB      &bt BT_CLR                     &none  &none  &none       &none  &none       &none
+&none        &none         &none         &none         &rgb_ug RGB_TOG   &kp F20                        &none  &none  &none       &none  &none       &none
+&none        &none         &none         &none         &none             &none   &kp C_MUTE  &mkp MCLK  &none  &none  &none       &none  &none       &none
+&bootloader  &sys_reset    &none         &m_to_base    &none             &none                          &none  &none  &m_to_base  &none  &sys_reset  &bootloader
             >;
             sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN &inc_dec_kp PG_UP PG_DN>;
         };
