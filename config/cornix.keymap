@@ -261,10 +261,10 @@
         number_layer {
             display-name = "Number";
             bindings = <
-&kp ESC    &none      &none      &none       &none      &rgb_ug RGB_TOG                            &none     &none       &none      &kp N7  &kp N8   &kp N9
+&kp ESC    &none      &none      &none       &none      &none                             &none     &none       &none      &kp N7  &kp N8   &kp N9
 &kp LCTRL  &kp EQUAL  &kp PLUS   &kp MINUS   &kp ASTRK  &kp FSLH                          &kp HOME  &kp PG_DN   &kp PG_UP  &kp N4  &kp N5   &kp N6
 &kp LSHFT  &kp DOT    &kp COMMA  &kp COLON   &kp SEMI   &kp UNDER  &kp C_MUTE  &mkp MCLK  &kp END   &kp DEL     &kp BSPC   &kp N1  &kp N2   &kp N3
-&kp LCTRL  &kp LGUI   &kp LALT   &m_to_nav  &kp TAB    &kp SPACE                         &kp BSPC  &kp RET     &m_to_base  &kp N0  &kp DOT  &kp PLUS
+&kp LCTRL  &kp LGUI   &kp LALT   &m_to_nav  &kp TAB    &kp SPACE                          &kp BSPC  &kp RET     &m_to_base  &kp N0  &kp DOT  &kp PLUS
             >;
             sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN &inc_dec_kp PG_UP PG_DN>;
         };
@@ -317,30 +317,11 @@
             display-name = "System";
             bindings = <
 &none        &bt BT_SEL 0  &bt BT_SEL 1  &bt BT_SEL 2  &out OUT_USB      &bt BT_CLR                     &none  &none  &none       &none  &none       &none
-&none        &none         &none         &none         &rgb_ug RGB_TOG   &kp F20                        &none  &none  &none       &none  &none       &none
+&none        &none         &none         &none         &none             &kp F20                        &none  &none  &none       &none  &none       &none
 &none        &none         &none         &none         &none             &none   &kp C_MUTE  &mkp MCLK  &none  &none  &none       &none  &none       &none
 &bootloader  &sys_reset    &none         &m_to_base    &none             &none                          &none  &none  &m_to_base  &none  &sys_reset  &bootloader
             >;
             sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN &inc_dec_kp PG_UP PG_DN>;
         };
-    };
-};
-
-&spi3 {
-    status = "okay";
-
-    led_strip: ws2812@0 {
-        status = "okay";
-    };
-};
-
-/ {
-    aliases {
-        status-ws2812 = &led_strip;
-    };
-
-    chosen {
-        zmk,underglow = &led_strip;
-        widget,rgb = &led_strip;
     };
 };
