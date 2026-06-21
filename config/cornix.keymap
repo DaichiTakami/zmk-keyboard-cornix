@@ -233,7 +233,7 @@
             quick-term-ms = <HM_TAPPING_REPEAT>;
 
             bindings = <&mo>,<&kp>;
-        }
+        };
 
         sel_ht_none: selector_hold_tap_none {
             compatible = "zmk,behavior-hold-tap";
