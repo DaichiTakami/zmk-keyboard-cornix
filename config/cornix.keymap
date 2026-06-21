@@ -292,7 +292,7 @@
         };
     };
 
-};
+
 
     keymap {
         compatible = "zmk,keymap";
