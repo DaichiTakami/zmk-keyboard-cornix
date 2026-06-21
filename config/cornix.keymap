@@ -278,7 +278,6 @@
 
     };
 
-    / {
     combos {
         compatible = "zmk,combos";
 
@@ -292,6 +291,7 @@
             layers = <BASE NUM SYM NAV>;
         };
     };
+
 };
 
     keymap {
