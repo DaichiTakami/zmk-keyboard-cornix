@@ -151,37 +151,37 @@
         m_to_base: m_to_base {
             compatible = "zmk,behavior-macro";
             #binding-cells = <0>;
-            bindings = <&macro_tap &to BASE>, <&macro_tap &kp F13>;
+            bindings = <&to BASE>, <&kp F13>;
         };
 
         m_to_num: m_to_num {
             compatible = "zmk,behavior-macro";
             #binding-cells = <0>;
-            bindings = <&macro_tap &to NUM>, <&macro_tap &kp F14>;
+            bindings = <&to NUM>, <&kp F14>;
         };
 
         m_to_sym: m_to_sym {
             compatible = "zmk,behavior-macro";
             #binding-cells = <0>;
-            bindings = <&macro_tap &to SYM>, <&macro_tap &kp F15>;
+            bindings = <&to SYM>, <&kp F15>;
         };
 
         m_to_nav: m_to_nav {
             compatible = "zmk,behavior-macro";
             #binding-cells = <0>;
-            bindings = <&macro_tap &to NAV>, <&macro_tap &kp F16>;
+            bindings = <&to NAV>, <&kp F16>;
         };
 
         m_to_game: m_to_game {
             compatible = "zmk,behavior-macro";
             #binding-cells = <0>;
-            bindings = <&macro_tap &to GAME>, <&macro_tap &kp F18>;
+            bindings = <&to GAME>, <&kp F18>;
         };
 
         m_to_sys: m_to_sys {
             compatible = "zmk,behavior-macro";
             #binding-cells = <0>;
-            bindings = <&macro_tap &to SYS>, <&macro_tap &kp F19>;
+            bindings = <&to SYS>, <&kp F19>;
         };
 
         m_mo_fn_from_nav: m_mo_fn_from_nav {
@@ -224,15 +224,15 @@
             hold-trigger-on-release;
         };
 
-        ht : hold_tap {
+        ht_mfn: hold_tap_function {
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
 
             flavor = "balanced";
             tapping-term-ms = <HM_TAPPING_TERM>;
-            quick-term-ms = <HM_TAPPING_REPEAT>;
+            quick-tap-ms = <HM_TAPPING_REPEAT>;
 
-            bindings = <&mo>,<&kp>;
+            bindings = <&m_mo_fn_from_nav>,<&kp>;
         };
 
         sel_ht_none: selector_hold_tap_none {
@@ -241,7 +241,7 @@
 
             flavor = "balanced";
             tapping-term-ms = <HM_TAPPING_TERM>;
-            quick-term-ms = <HM_TAPPING_REPEAT>;
+            quick-tap-ms = <HM_TAPPING_REPEAT>;
 
             bindings = <&mo>,<&none>;
         };
@@ -278,7 +278,7 @@
 &kp ESC    &none      &none      &none             &none      &none                             &none     &none       &none      &kp N7  &kp N8   &kp N9
 &kp LCTRL  &kp EQUAL  &kp PLUS   &kp MINUS         &kp ASTRK  &kp FSLH                          &kp HOME  &kp PG_DN   &kp PG_UP  &kp N4  &kp N5   &kp N6
 &kp LSHFT  &kp DOT    &kp COMMA  &kp COLON         &kp SEMI   &kp UNDER  &kp C_MUTE  &mkp MCLK  &kp END   &kp DEL     &kp BSPC   &kp N1  &kp N2   &kp N3
-&kp LCTRL  &kp LGUI   &kp LALT   &td_layer_select  &ht m_mo_fn_from_nav TAB    &kp SPACE                         &kp BSPC  &kp RET     &m_input_switch  &kp N0  &kp DOT  &kp PLUS
+&kp LCTRL  &kp LGUI   &kp LALT   &td_layer_select  &ht_mfn 0 TAB    &kp SPACE                         &kp BSPC  &kp RET     &m_input_switch  &kp N0  &kp DOT  &kp PLUS
             >;
             sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN &inc_dec_kp PG_UP PG_DN>;
         };
