@@ -278,22 +278,6 @@
 
     };
 
-    / {
-        combos {
-            compatible = "zmk,combos";
-
-            combo_ime_toggle {
-                timeout-ms = <40>;
-                require-prior-idle-ms = <120>;
-
-                key-positions = <42 45>;
-                bindings = <&m_input_switch>;
-
-                layers = <BASE NUM SYM NAV>;
-            };
-        };
-    };
-
     keymap {
         compatible = "zmk,keymap";
 
