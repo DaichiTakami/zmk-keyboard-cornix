@@ -283,7 +283,7 @@
             timeout-ms = <40>;
 
             key-positions = <42 45>;
-            bindings = <&m_input_switch>;
+            bindings = <&kp LC(SPACE)>;
 
             layers = <BASE NUM SYM NAV>;
         };
