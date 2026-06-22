@@ -343,7 +343,7 @@
             bindings = <
 
                 &kp ESC    &none            &none            &none      &none             &none                             &m_redo       &kp HOME        &kp PG_DN       &kp PG_UP     &kp END          &kp DEL
-                &trans     &ht LCTRL LC(A)  &ht LALT m_save  &kp LSHFT  &ht LGUI LC(F)    &none                             &kp LC(LEFT)  &kp LEFT        &kp DOWN        &kp UP        &kp RIGHT        &kp LC(RIGHT)
+                &trans     &kp LCTRL  &kp LALT  &kp LSHFT  &kp LGUI    &none                             &kp LC(LEFT)  &kp LEFT        &kp DOWN        &kp UP        &kp RIGHT        &kp LC(RIGHT)
                 &kp LSHFT  &m_undo          &m_cut           &m_copy    &m_paste          &none      &kp C_MUTE  &mkp MCLK  &none         &msc SCRL_LEFT  &msc SCRL_DOWN  &msc SCRL_UP  &msc SCRL_RIGHT  &kp RET
                 &kp LCTRL  &kp LGUI         &kp LALT         &trans     &td_layer_select  &kp SPACE                         &kp BSPC      &kp RET         &kp DEL         &m_find       &kp F3           &kp LS(F3)
             >;
