@@ -245,7 +245,6 @@
 
             bindings = <&kp>,<&kp>;
         };
-        }
 
         sel_ht: selector_hold_tap {
             compatible = "zmk,behavior-hold-tap";
