@@ -311,7 +311,7 @@
                 &kp ESC       &kp Q          &kp W           &kp E           &kp R              &kp T                               &kp Y      &kp U          &kp I           &kp O          &kp P              &kp QUESTION
                 &lt NAV CAPS  &hm_l LCTRL A  &hm_l LALT S    &hm_l LSHFT D   &hm_l LGUI F       &kp G                               &kp H      &hm_r RGUI J   &hm_r RSHFT K   &hm_r RALT L   &hm_r RCTRL SEMI   &kp MINUS
                 &kp LSHFT     &kp Z          &kp X           &kp C           &kp V              &kp B       &kp C_MUTE  &mkp MCLK   &kp N      &kp M          &kp COMMA       &kp DOT        &kp FSLH           &kp SQT
-                &kp LCTRL     &kp LGUI       &kp LALT        &mo FnItem     &td_layer_select   &kp SPACE                           &kp BSPC   &kp RET        &kp DEL         &kp LANG1      &kp LANG2          &kp DEL
+                &kp LCTRL     &kp LGUI       &kp LALT        &mo FN_ITEM     &td_layer_select   &kp SPACE                           &kp BSPC   &kp RET        &kp DEL         &kp LANG1      &kp LANG2          &kp DEL
             >;
             sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN &inc_dec_kp PG_UP PG_DN>;
         };
