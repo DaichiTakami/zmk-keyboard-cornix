@@ -260,43 +260,17 @@
             bindings = <&mo>,<&kp>;
         };
 
-        sel_ht_none: selector_hold_tap_none {
+        ime_ht: ime_hold_tap {
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
 
-            flavor = "balanced";
-            tapping-term-ms = <HM_TAPPING_TERM>;
-            quick-tap-ms = <HM_TAPPING_REPEAT>;
+            flavor = "tap-preferred";
+            tapping-term-ms = <HM_TAPPING_TERM_FAST>;
+            quick-tap-ms = <SEL_QUICK_TAP>;
 
-            bindings = <&mo>,<&none>;
+            bindings = <&m_input_switch>, <&kp>;
         };
 
-        td_layer_select: tap_dance_layer_select {
-            compatible = "zmk,behavior-tap-dance";
-            #binding-cells = <0>;
-
-            tapping-term-ms = <SEL_TD_TERM>;
-
-            bindings = <&sel_ht SEL TAB>, <&m_to_base>;
-        };
-
-        td_ime_toggle: tap_dance_ime_toggle {
-            compatible = "zmk,behavior-tap-dance";
-            #binding-cells = <0>;
-
-            tapping-term-ms = <SEL_TD_TERM>;
-
-            bindings = <&kp LC(SPACE)>, <&RET>;
-        };
-
-        td_layer_select_none: tap_dance_layer_select_none {
-            compatible = "zmk,behavior-tap-dance";
-            #binding-cells = <0>;
-
-            tapping-term-ms = <250>;
-
-            bindings = <&sel_ht_none SEL 0>, <&m_to_base>;
-        };
     };
 
 
@@ -310,7 +284,7 @@
                 &kp ESC       &kp Q          &kp W           &kp E           &kp R              &kp T                               &kp Y      &kp U          &kp I           &kp O          &kp P              &kp QUESTION
                 &lt NAV CAPS  &hm_l LCTRL A  &hm_l LALT S    &hm_l LSHFT D   &hm_l LGUI F       &kp G                               &kp H      &hm_r RGUI J   &hm_r RSHFT K   &hm_r RALT L   &hm_r RCTRL SEMI   &kp MINUS
                 &kp LSHFT     &kp Z          &kp X           &kp C           &kp V              &kp B       &kp C_MUTE  &mkp MCLK   &kp N      &kp M          &kp COMMA       &kp DOT        &kp FSLH           &kp SQT
-                &kp LCTRL     &kp LGUI       &kp LALT        &mo FN_ITEM     &sel_ht SEL TAB    &kp SPACE                           &kp BSPC   &td_ime_toggle        &kp DEL         &kp LANG1      &kp LANG2          &kp DEL
+                &kp LCTRL     &kp LGUI       &kp LALT        &mo FN_ITEM     &sel_ht SEL TAB    &kp SPACE                           &kp BSPC   &ime_ht 0 RET          &kp DEL         &kp LANG1      &kp LANG2          &kp DEL
             >;
             sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN &inc_dec_kp PG_UP PG_DN>;
         };
@@ -377,7 +351,7 @@
                 &none        &bt BT_SEL 0  &bt BT_SEL 1  &bt BT_SEL 2  &out OUT_USB     &bt BT_CLR                         &none  &none  &none  &none  &none       &none
                 &none        &none         &none         &ind_bat      &ind_con         &kp F20                            &none  &none  &none  &none  &none       &none
                 &none        &none         &none         &none         &none            &none       &kp C_MUTE  &mkp MCLK  &none  &none  &none  &none  &none       &none
-                &bootloader  &sys_reset    &none         &none         &sel_ht SEL TAB  &SPACE                             &BSPC  &RET   &DEL   &none  &sys_reset  &bootloader
+                &bootloader  &sys_reset    &none         &none         &sel_ht SEL TAB  &kp SPACE                          &kp BSPC  &kp RET   &kp DEL   &none  &sys_reset  &bootloader
             >;
             sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN &inc_dec_kp PG_UP PG_DN>;
         };
