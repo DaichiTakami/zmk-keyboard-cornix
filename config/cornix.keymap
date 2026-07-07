@@ -205,8 +205,8 @@
         };
 
         combo_navigation {
-            timeout-ms = <55>;
-            key-positions = <LH2 RH2>; /* both outer thumb keys */
+            timeout-ms = <40>;
+            key-positions = <LB2 LB1>; /* C + V */
             bindings = <&mo NAV>;
             layers = <BASE>;
             slow-release;
