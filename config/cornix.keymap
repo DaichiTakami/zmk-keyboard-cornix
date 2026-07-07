@@ -1,8 +1,7 @@
 /*
- * Cornix ZMK keymap
- * Scope: Base / Number / Symbol / Navigation / Game / Function-Item / System
+ * Cornix ZMK keymap - rework proposal
  *
- * Layer layout:
+ * Layers:
  * 0 BASE
  * 1 NUM
  * 2 SYM
@@ -10,6 +9,18 @@
  * 4 GAME
  * 5 FN_ITEM
  * 6 SYS
+ *
+ * Main ideas:
+ * - Q + W combo sends Escape on BASE.
+ * - Left middle thumb: tap Tab / hold NUM.
+ * - Right middle thumb: tap Enter / hold SYM.
+ * - Left + right middle-thumb combo switches IME (Ctrl+Space).
+ * - On either outer thumb: tap forces BASE; hold forces GAME.
+ * - Both outer thumb keys together momentarily activate NAV on BASE.
+ * - Shift + Backspace sends Delete.
+ * - Base ':' remains on the normal semicolon position; ';' is on SYM.
+ * - Z + X held together momentarily activates FN_ITEM on BASE.
+ * - F13-F19 layer-view macros and the selector layer are removed.
  */
 
 #include "zmk-helpers/helper.h"
@@ -28,10 +39,11 @@
 #define HM_TAPPING_TERM       200
 #define HM_TAPPING_TERM_FAST  180
 #define HM_TAPPING_REPEAT     150
-#define HM_PRIOR_IDLE         70
-#define SEL_TAPPING_TERM    130
-#define SEL_QUICK_TAP       120
-#define SEL_TD_TERM         180
+#define HM_PRIOR_IDLE          70
+#define THUMB_TAPPING_TERM    180
+#define THUMB_QUICK_TAP       130
+#define GAME_TAPPING_TERM     150
+#define MODE_TAPPING_TERM     220
 
 #define BASE    0
 #define NUM     1
@@ -40,27 +52,15 @@
 #define GAME    4
 #define FN_ITEM 5
 #define SYS     6
-#define SEL     7
 
 #define KEYS_L LT0 LT1 LT2 LT3 LT4 LT5 LM0 LM1 LM2 LM3 LM4 LM5 LB0 LB1 LB2 LB3 LB4 LB5
 #define KEYS_R RT0 RT1 RT2 RT3 RT4 RT5 RM0 RM1 RM2 RM3 RM4 RM5 RB0 RB1 RB2 RB3 RB4 RB5
-#define THUMBS LH1 LH0 RH0 RH1
+/* The Cornix helper header aliases some palm positions; 47-49 are the three right palm keys in this 50-binding layout. */
+#define KEYS_R_ALL KEYS_R 47 48 49
 #define KEYS_T LH1 LH0 RH0 RH1
 
 / {
     macros {
-        m_coloncolon: m_coloncolon {
-            compatible = "zmk,behavior-macro";
-            #binding-cells = <0>;
-            bindings = <&macro_tap &kp COLON>, <&macro_tap &kp COLON>;
-        };
-
-        m_arrow: m_arrow {
-            compatible = "zmk,behavior-macro";
-            #binding-cells = <0>;
-            bindings = <&macro_tap &kp MINUS>, <&macro_tap &kp GT>;
-        };
-
         m_undo: m_undo {
             compatible = "zmk,behavior-macro";
             #binding-cells = <0>;
@@ -85,12 +85,6 @@
             bindings = <&macro_press &kp LCTRL>, <&macro_tap &kp V>, <&macro_release &kp LCTRL>;
         };
 
-        m_save: m_save {
-            compatible = "zmk,behavior-macro";
-            #binding-cells = <0>;
-            bindings = <&macro_press &kp LCTRL>, <&macro_tap &kp S>, <&macro_release &kp LCTRL>;
-        };
-
         m_redo: m_redo {
             compatible = "zmk,behavior-macro";
             #binding-cells = <0>;
@@ -108,96 +102,6 @@
             #binding-cells = <0>;
             bindings = <&macro_press &kp LCTRL>, <&macro_tap &kp SPACE>, <&macro_release &kp LCTRL>;
         };
-
-        m_view_base: m_view_base {
-            compatible = "zmk,behavior-macro";
-            #binding-cells = <0>;
-            bindings = <&macro_tap &kp F13>;
-        };
-
-        m_view_num: m_view_num {
-            compatible = "zmk,behavior-macro";
-            #binding-cells = <0>;
-            bindings = <&macro_tap &kp F14>;
-        };
-
-        m_view_sym: m_view_sym {
-            compatible = "zmk,behavior-macro";
-            #binding-cells = <0>;
-            bindings = <&macro_tap &kp F15>;
-        };
-
-        m_view_nav: m_view_nav {
-            compatible = "zmk,behavior-macro";
-            #binding-cells = <0>;
-            bindings = <&macro_tap &kp F16>;
-        };
-
-        m_view_fn: m_view_fn {
-            compatible = "zmk,behavior-macro";
-            #binding-cells = <0>;
-            bindings = <&macro_tap &kp F17>;
-        };
-
-        m_view_game: m_view_game {
-            compatible = "zmk,behavior-macro";
-            #binding-cells = <0>;
-            bindings = <&macro_tap &kp F18>;
-        };
-
-        m_view_sys: m_view_sys {
-            compatible = "zmk,behavior-macro";
-            #binding-cells = <0>;
-            bindings = <&macro_tap &kp F19>;
-        };
-
-        m_to_base: m_to_base {
-            compatible = "zmk,behavior-macro";
-            #binding-cells = <0>;
-            bindings = <&to BASE>, <&kp F13>;
-        };
-
-        m_to_num: m_to_num {
-            compatible = "zmk,behavior-macro";
-            #binding-cells = <0>;
-            bindings = <&to NUM>, <&kp F14>;
-        };
-
-        m_to_sym: m_to_sym {
-            compatible = "zmk,behavior-macro";
-            #binding-cells = <0>;
-            bindings = <&to SYM>, <&kp F15>;
-        };
-
-        m_to_nav: m_to_nav {
-            compatible = "zmk,behavior-macro";
-            #binding-cells = <0>;
-            bindings = <&to NAV>, <&kp F16>;
-        };
-
-        m_to_game: m_to_game {
-            compatible = "zmk,behavior-macro";
-            #binding-cells = <0>;
-            bindings = <&to GAME>, <&kp F18>;
-        };
-
-        m_to_sys: m_to_sys {
-            compatible = "zmk,behavior-macro";
-            #binding-cells = <0>;
-            bindings = <&to SYS>, <&kp F19>;
-        };
-
-        m_mo_fn_from_nav: m_mo_fn_from_nav {
-            compatible = "zmk,behavior-macro";
-            #binding-cells = <0>;
-            bindings =
-                <&macro_press &mo FN_ITEM>,
-                <&macro_tap &kp F17>,
-                <&macro_pause_for_release>,
-                <&macro_release &mo FN_ITEM>,
-                <&macro_tap &kp F16>;
-        };
-
     };
 
     behaviors {
@@ -227,53 +131,87 @@
             hold-trigger-on-release;
         };
 
-        ht_mfn: hold_tap_function {
-            compatible = "zmk,behavior-hold-tap";
-            #binding-cells = <2>;
-
-            flavor = "balanced";
-            tapping-term-ms = <HM_TAPPING_TERM>;
-            quick-tap-ms = <HM_TAPPING_REPEAT>;
-
-            bindings = <&m_mo_fn_from_nav>,<&kp>;
+        bspc_del: backspace_delete {
+            compatible = "zmk,behavior-mod-morph";
+            #binding-cells = <0>;
+            bindings = <&kp BSPC>, <&kp DEL>;
+            mods = <(MOD_LSFT|MOD_RSFT)>;
         };
 
-        ht: hold_tap {
+        /* Tab when tapped; NUM when held with a right-hand key. */
+        lt_num: number_tab {
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
+            bindings = <&mo>, <&kp>;
 
             flavor = "balanced";
-            tapping-term-ms = <HM_TAPPING_TERM>;
-            quick-tap-ms = <HM_TAPPING_REPEAT>;
-
-            bindings = <&kp>,<&kp>;
+            tapping-term-ms = <THUMB_TAPPING_TERM>;
+            quick-tap-ms = <THUMB_QUICK_TAP>;
+            hold-trigger-key-positions = <KEYS_R_ALL>;
+            hold-trigger-on-release;
         };
 
-        sel_ht: selector_hold_tap {
+        /* Enter when tapped; SYM when held. Symbols are intentionally available on both hands. */
+        lt_sym: symbol_enter {
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
+            bindings = <&mo>, <&kp>;
 
             flavor = "hold-preferred";
-            tapping-term-ms = <SEL_TAPPING_TERM>;
-            quick-tap-ms = <SEL_QUICK_TAP>;
-
-            bindings = <&mo>,<&kp>;
+            tapping-term-ms = <THUMB_TAPPING_TERM>;
+            quick-tap-ms = <THUMB_QUICK_TAP>;
         };
 
-        ime_ht: ime_hold_tap {
+
+        /* Deterministic mode selection: tap -> BASE, hold -> GAME. */
+        mode_select: mode_select {
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
+            bindings = <&to>, <&to>;
 
             flavor = "tap-preferred";
-            tapping-term-ms = <HM_TAPPING_TERM_FAST>;
-            quick-tap-ms = <SEL_QUICK_TAP>;
-
-            bindings = <&m_input_switch>, <&kp>;
+            tapping-term-ms = <MODE_TAPPING_TERM>;
         };
 
+        /* In GAME: tap Tab; hold for the item/function layer. */
+        lt_game_item: game_item_tab {
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <2>;
+            bindings = <&mo>, <&kp>;
+
+            flavor = "hold-preferred";
+            tapping-term-ms = <GAME_TAPPING_TERM>;
+            quick-tap-ms = <THUMB_QUICK_TAP>;
+        };
     };
 
+    combos {
+        compatible = "zmk,combos";
 
+        combo_escape {
+            timeout-ms = <45>;
+            key-positions = <LT4 LT3>; /* Q + W */
+            bindings = <&kp ESC>;
+            layers = <BASE>;
+        };
+
+
+        combo_function {
+            timeout-ms = <45>;
+            key-positions = <LB4 LB3>; /* Z + X */
+            bindings = <&mo FN_ITEM>;
+            layers = <BASE>;
+            slow-release;
+        };
+
+        combo_navigation {
+            timeout-ms = <55>;
+            key-positions = <LH2 RH2>; /* both outer thumb keys */
+            bindings = <&mo NAV>;
+            layers = <BASE>;
+            slow-release;
+        };
+    };
 
     keymap {
         compatible = "zmk,keymap";
@@ -281,10 +219,10 @@
         base_layer {
             display-name = "Base";
             bindings = <
-                &kp ESC       &kp Q          &kp W           &kp E           &kp R              &kp T                               &kp Y      &kp U          &kp I           &kp O          &kp P              &kp QUESTION
-                &lt NAV CAPS  &hm_l LCTRL A  &hm_l LALT S    &hm_l LSHFT D   &hm_l LGUI F       &kp G                               &kp H      &hm_r RGUI J   &hm_r RSHFT K   &hm_r RALT L   &hm_r RCTRL SEMI   &kp MINUS
-                &kp LSHFT     &kp Z          &kp X           &kp C           &kp V              &kp B       &kp C_MUTE  &mkp MCLK   &kp N      &kp M          &kp COMMA       &kp DOT        &kp FSLH           &kp SQT
-                &kp LCTRL     &kp LGUI       &kp LALT        &mo FN_ITEM     &sel_ht SEL TAB    &kp SPACE                           &kp BSPC   &ime_ht 0 RET          &kp DEL         &kp LANG1      &kp LANG2          &kp DEL
+                &none          &kp Q          &kp W           &kp E           &kp R              &kp T                               &kp Y      &kp U          &kp I           &kp O          &kp P              &none
+                &none          &hm_l LCTRL A  &hm_l LALT S    &hm_l LSHFT D   &hm_l LGUI F       &kp G                               &kp H      &hm_r RGUI J   &hm_r RSHFT K   &hm_r RALT L   &hm_r RCTRL COLON  &none
+                &none          &kp Z          &kp X           &kp C           &kp V              &kp B       &kp C_MUTE  &mkp MCLK   &kp N      &kp M          &kp COMMA       &kp DOT        &kp FSLH           &none
+                &none          &none          &none           &mode_select GAME BASE  &lt_num NUM TAB     &kp SPACE                           &bspc_del  &lt_sym SYM RET          &mode_select GAME BASE        &mo SYS        &none             &none
             >;
             sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN &inc_dec_kp PG_UP PG_DN>;
         };
@@ -292,10 +230,10 @@
         number_layer {
             display-name = "Number";
             bindings = <
-                &kp ESC    &none      &none      &none      &none             &none                             &none     &none       &none      &kp N7  &kp N8   &kp N9
-                &trans     &kp EQUAL  &kp PLUS   &kp MINUS  &kp ASTRK         &kp FSLH                          &kp HOME  &kp PG_DN   &kp PG_UP  &kp N4  &kp N5   &kp N6
-                &kp LSHFT  &kp DOT    &kp COMMA  &kp COLON  &kp SEMI          &kp UNDER  &kp C_MUTE  &mkp MCLK  &kp END   &kp DEL     &kp BSPC   &kp N1  &kp N2   &kp N3
-                &kp LCTRL  &kp LGUI   &kp LALT   &trans     &trans   &trans                         &trans  &trans     &trans    &kp N0  &kp DOT  &kp PLUS
+                &trans  &trans  &trans  &trans  &trans  &trans                          &kp EQUAL  &kp PRCNT  &kp FSLH   &kp N7  &kp N8   &kp N9
+                &trans  &trans  &trans  &trans  &trans  &trans                          &kp LPAR   &kp RPAR   &kp ASTRK  &kp N4  &kp N5   &kp N6
+                &trans  &trans  &trans  &trans  &trans  &trans  &trans      &trans       &kp CARET  &kp COMMA  &kp MINUS  &kp N1  &kp N2   &kp N3
+                &trans  &trans  &trans  &trans  &trans  &trans                          &trans     &trans     &trans      &kp N0  &kp DOT  &kp PLUS
             >;
             sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN &inc_dec_kp PG_UP PG_DN>;
         };
@@ -303,10 +241,10 @@
         symbol_layer {
             display-name = "Symbol";
             bindings = <
-                &kp ESC    &kp EXCL   &kp AT     &kp HASH   &kp DLLR  &kp PRCNT                          &kp CARET &kp LT      &kp GT    &kp LBKT       &kp RBKT   &kp DEL
-                &trans     &kp AMPS   &kp PIPE   &kp EQUAL  &kp PLUS  &kp MINUS                          &kp TILDE &kp LPAR    &kp RPAR  &kp LBRC       &kp RBRC   &kp RET
-                &kp LSHFT  &kp ASTRK  &kp FSLH   &kp UNDER  &kp BSLH  &kp GRAVE  &kp C_MUTE  &mkp MCLK  &kp MINUS &kp SQT     &kp DQT   &kp SEMI       &kp COLON  &kp RSHFT
-                &kp LCTRL  &kp LGUI   &kp LALT   &trans     &trans    &trans                          &trans  &trans     &trans   &m_coloncolon  &m_arrow   &kp UNDER
+                &none   &kp EXCL   &kp AT      &kp HASH   &kp DLLR   &kp PRCNT                          &kp CARET  &kp LBKT   &kp RBKT   &kp LBRC      &kp RBRC      &none
+                &none   &kp TILDE  &kp MINUS   &kp EQUAL  &kp FSLH   &kp BSLH                           &kp LPAR   &kp RPAR   &kp LT     &kp GT        &kp AMPS      &none
+                &none   &kp GRAVE  &kp UNDER   &kp PLUS   &kp ASTRK  &kp PIPE   &trans      &trans       &kp SQT    &kp DQT    &kp COMMA  &kp DOT       &kp SEMI      &none
+                &none   &none      &none       &trans     &trans     &trans                             &trans     &trans     &trans      &trans        &none         &none
             >;
             sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN &inc_dec_kp PG_UP PG_DN>;
         };
@@ -314,11 +252,10 @@
         navigation_layer {
             display-name = "Navi";
             bindings = <
-
-                &kp ESC    &none            &none            &none      &none            &none                             &m_redo        &kp HOME         &kp PG_DN        &kp PG_UP      &kp END           &kp DEL
-                &trans     &ht LCTRL LC(A)  &ht LALT LC(S)   &kp LSHFT  &ht LGUI LC(F)   &none                             &kp LC(LEFT)   &kp LEFT         &kp DOWN         &kp UP         &kp RIGHT         &kp LC(RIGHT)
-                &kp LSHFT  &m_undo          &m_cut           &m_copy    &m_paste         &none     &kp C_MUTE  &mkp MCLK   &none          &msc SCRL_LEFT   &msc SCRL_DOWN   &msc SCRL_UP   &msc SCRL_RIGHT   &kp RET
-                &kp LCTRL  &kp LGUI         &kp LALT         &trans     &trans           &trans                            &trans         &trans           &trans           &m_find        &kp F3            &kp LS(F3)
+                &none   &m_redo  &none   &none    &none    &none                         &kp LC(LEFT)  &kp HOME  &kp PG_DN      &kp PG_UP    &kp END          &none
+                &none   &trans   &trans  &trans   &trans   &trans                        &kp LEFT      &kp DOWN  &kp UP         &kp RIGHT    &kp LC(RIGHT)    &none
+                &none   &m_undo  &m_cut  &m_copy  &m_paste &none   &trans      &trans     &kp DEL       &msc SCRL_LEFT  &msc SCRL_DOWN  &msc SCRL_UP  &msc SCRL_RIGHT  &none
+                &trans  &trans   &trans  &trans   &trans   &trans                        &trans        &trans    &trans         &m_find      &kp F3           &kp LS(F3)
             >;
             sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN &inc_dec_kp PG_UP PG_DN>;
         };
@@ -326,10 +263,10 @@
         game_base_layer {
             display-name = "Game";
             bindings = <
-                &kp ESC    &kp Q     &kp W     &kp E        &kp R    &kp T                             &kp Y     &kp U    &kp I            &kp O      &kp P      &kp QUESTION
-                &kp LCTRL  &kp A     &kp S     &kp D        &kp F    &kp G                             &kp H     &kp J    &kp K            &kp L      &kp SEMI   &kp MINUS
-                &kp LSHFT  &kp Z     &kp X     &kp C        &kp V    &kp B      &kp C_MUTE  &mkp MCLK  &kp N     &kp M    &kp COMMA        &kp DOT    &kp FSLH   &kp SQT
-                &kp LCTRL  &kp LGUI  &kp LALT  &mo FN_ITEM  &kp TAB  &kp SPACE                         &kp BSPC  &kp RET  &kp LC(SPACE)    &kp LANG1  &kp LANG2  &to BASE
+                &kp ESC    &kp Q     &kp W     &kp E        &kp R    &kp T                             &kp Y     &kp U    &kp I         &kp O      &kp P      &kp QUESTION
+                &kp LCTRL  &kp A     &kp S     &kp D        &kp F    &kp G                             &kp H     &kp J    &kp K         &kp L      &kp SEMI   &kp MINUS
+                &kp LSHFT  &kp Z     &kp X     &kp C        &kp V    &kp B      &kp C_MUTE  &mkp MCLK  &kp N     &kp M    &kp COMMA     &kp DOT    &kp FSLH   &kp SQT
+                &kp LCTRL  &kp LGUI  &kp LALT  &mode_select GAME BASE  &lt_game_item FN_ITEM TAB  &kp SPACE       &kp BSPC  &kp RET  &mode_select GAME BASE  &kp LC(SPACE)  &none       &none
             >;
             sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN &inc_dec_kp PG_UP PG_DN>;
         };
@@ -339,8 +276,8 @@
             bindings = <
                 &kp ESC    &kp N1   &kp N2    &kp N3  &kp N4   &kp N5                            &none    &none    &none   &kp F7   &kp F8   &kp F9
                 &kp LCTRL  &kp K    &kp L     &kp M   &kp H    &kp N6                            &none    &none    &none   &kp F4   &kp F5   &kp F6
-                &kp LSHFT  &kp Z    &kp X     &kp C   &kp V    &kp B      &kp C_MUTE  &mkp MCLK  &none    &none    &none   &kp F1   &kp F2   &kp F3
-                &kp LCTRL  &kp LGUI &kp LALT  &trans  &kp TAB  &kp SPACE                         &kp BSPC &kp RET  &none   &kp F10  &kp F11  &kp F12
+                &kp LSHFT  &kp Z    &kp X     &kp C   &kp V    &kp B      &trans      &trans      &none    &none    &none   &kp F1   &kp F2   &kp F3
+                &trans     &trans   &trans     &trans  &trans   &trans                            &trans   &trans   &trans  &kp F10  &kp F11  &kp F12
             >;
             sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN &inc_dec_kp PG_UP PG_DN>;
         };
@@ -348,22 +285,10 @@
         system_layer {
             display-name = "System";
             bindings = <
-                &none        &bt BT_SEL 0  &bt BT_SEL 1  &bt BT_SEL 2  &out OUT_USB     &bt BT_CLR                         &none  &none  &none  &none  &none       &none
-                &none        &none         &none         &ind_bat      &ind_con         &kp F20                            &none  &none  &none  &none  &none       &none
-                &none        &none         &none         &none         &none            &none       &kp C_MUTE  &mkp MCLK  &none  &none  &none  &none  &none       &none
-                &bootloader  &sys_reset    &none         &none         &sel_ht SEL TAB  &kp SPACE                          &kp BSPC  &kp RET   &kp DEL   &none  &sys_reset  &bootloader
-            >;
-            sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN &inc_dec_kp PG_UP PG_DN>;
-        };
-
-        sel_layer {
-            display-name = "Selector";
-            bindings = <
-                &none   &none   &none   &none   &none   &none                           &none        &none     &none     &none     &none   &none
-                &none   &none   &none   &none   &none   &none                           &none        &to NUM   &to SYM   &to NAV   &none   &none
-                &none   &none   &none   &none   &none   &none   &kp C_MUTE  &mkp MCLK   &none        &to GAME  &to SYS   &none     &none   &none
-                &none   &none   &none   &none   &none   &none                           &to BASE     &none     &none     &none     &none   &none
-
+                &none        &bt BT_SEL 0  &bt BT_SEL 1  &bt BT_SEL 2  &out OUT_USB  &bt BT_CLR                         &none  &none  &none  &none  &none       &none
+                &none        &none         &none         &ind_bat      &ind_con      &kp CAPS                           &none  &none  &none  &none  &none       &none
+                &none        &none         &none         &none         &none         &none       &trans      &trans      &none  &none  &none  &none  &none       &none
+                &bootloader  &sys_reset    &none         &trans        &trans         &trans                            &trans  &trans  &trans  &trans  &sys_reset  &bootloader
             >;
             sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN &inc_dec_kp PG_UP PG_DN>;
         };
